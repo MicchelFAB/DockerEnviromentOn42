@@ -1,0 +1,35 @@
+# Docker volumes and data
+*.log
+
+# IDE
+.vscode/settings.json
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+*~
+
+# Backup files
+*.backup
+*.old
+*.bak
+
+# Temporary files
+*.tmp
+*.temp
+/tmp/
+
+# Docker Compose overrides
+docker-compose.override.yml
+
+# Environment variables (if any)
+.env
+.env.local
+
+# NFS test files
+test.txt
+
+# Keep README files
+!README.md
+!**/README.md
