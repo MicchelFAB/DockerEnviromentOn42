@@ -1,7 +1,7 @@
 #!/bin/bash
 # Helper para executar comandos Flutter no container
 
-CONTAINER="flutter-dev"
+CONTAINER="flutter-dev-container"
 
 if ! docker ps -q -f name="$CONTAINER" | grep -q .; then
     echo "❌ Container não está rodando."

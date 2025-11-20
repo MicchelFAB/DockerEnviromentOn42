@@ -6,24 +6,25 @@ services:
     stdin_open: true
     tty: true
     volumes:
-      # Your project workspace
+      # Your project workspace - adjust path as needed
       - ./pastaCompartilhada:/workspace:cached
       
-      # NFS volumes for Flutter and Android SDKs
-      # Update these paths to match your sgoinfre location
-      - ~/sgoinfre/flutter-sdk:/home/developer/flutter:cached
-      - ~/sgoinfre/android-sdk:/home/developer/android-sdk:cached
-      - ~/sgoinfre/android-config:/home/developer/.android:cached
+      # NFS volumes for Flutter and Android SDKs - UPDATE THESE PATHS
+      # Replace /home/YOUR_USERNAME with your actual home directory
+      - /home/YOUR_USERNAME/sgoinfre/flutter-sdk:/home/developer/flutter:cached
+      - /home/YOUR_USERNAME/sgoinfre/android-sdk:/home/developer/android-sdk:cached
+      - /home/YOUR_USERNAME/sgoinfre/android-config:/home/developer/.android:cached
       
-      # Named volumes for caches
+      # Named volumes for caches (no changes needed)
       - pub-cache:/home/developer/pub-cache
       - gradle-cache:/home/developer/gradle-cache
       
       # Writable copy of Flutter SDK (named volume) used at runtime when host mount is not writable
       - flutter-exec:/home/developer/flutter-exec
       
-      # X11 socket for GUI apps (optional - uncomment if needed for Flutter Linux desktop)
+      # X11 socket for GUI apps (Flutter Linux desktop) - optional
       # - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      # - /run/user/YOUR_UID:/run/user/YOUR_UID:rw
       
     environment:
       - FLUTTER_HOME=/home/developer/flutter
@@ -32,6 +33,9 @@ services:
       - PUB_CACHE=/home/developer/pub-cache
       - GRADLE_USER_HOME=/home/developer/gradle-cache
       - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+      # - DISPLAY=${DISPLAY}
+      # - XDG_RUNTIME_DIR=/run/user/YOUR_UID
+      # - LIBGL_ALWAYS_SOFTWARE=1
       
     working_dir: /workspace
     ports:
