@@ -1,0 +1,40 @@
+{
+  "name": "Flutter & Android Development",
+  "dockerComposeFile": "../docker-compose.yaml",
+  "service": "flutter-dev",
+  "workspaceFolder": "/workspace",
+  "postCreateCommand": "bash -c 'echo \"✨ Container ready! Run setup-sdks.sh if SDKs are not installed yet.\"'",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dart-code.dart-code",
+        "dart-code.flutter",
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "dart.flutterSdkPath": "/home/developer/flutter",
+        "dart.sdkPath": "/home/developer/flutter/bin/cache/dart-sdk",
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "files.watcherExclude": {
+          "**/build/**": true,
+          "**/.dart_tool/**": true
+        }
+      }
+    }
+  },
+  "forwardPorts": [8080, 5000, 5001, 5002],
+  "portsAttributes": {
+    "8080": {
+      "label": "Flutter Web Server",
+      "onAutoForward": "notify"
+    },
+    "5000-5002": {
+      "label": "Flutter Debug Server"
+    }
+  },
+  "remoteUser": "root",
+  "overrideCommand": true,
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {}
+  }
+}
