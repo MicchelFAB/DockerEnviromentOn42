@@ -9,7 +9,7 @@ services:
     volumes:
       # ⚠️ CHANGE THIS PATH: Point to your Flutter project directory
       # Example: - /home/YOUR_USERNAME/your-project:/workspace:cached
-      - ../mobileModule00:/workspace:cached
+      - /home/mamaral-/Documents/42Advanced/Github/42Porto-MobilePiscine/mobileModule00:/workspace:cached
       - /home/mamaral-/goinfre/volumes/flutter-sdk:/home/developer/flutter:cached
       - /home/mamaral-/goinfre/volumes/android-sdk:/home/developer/android-sdk:cached
       - pub-cache:/home/developer/pub-cache
