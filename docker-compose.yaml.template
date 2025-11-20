@@ -6,14 +6,16 @@ services:
     stdin_open: true
     tty: true
     volumes:
-      # Your project workspace - adjust path as needed
+      # ⚠️ CHANGE THIS PATH: Point to your Flutter project directory
+      # Example: - /home/YOUR_USERNAME/your-project:/workspace:cached
       - ./pastaCompartilhada:/workspace:cached
       
       # NFS volumes for Flutter and Android SDKs - UPDATE THESE PATHS
-      # Replace /home/YOUR_USERNAME with your actual home directory
-      - /home/YOUR_USERNAME/sgoinfre/flutter-sdk:/home/developer/flutter:cached
-      - /home/YOUR_USERNAME/sgoinfre/android-sdk:/home/developer/android-sdk:cached
-      - /home/YOUR_USERNAME/sgoinfre/android-config:/home/developer/.android:cached
+      # ⚠️ Important: Use goinfre (not sgoinfre) as it's typically the correct path
+      # Replace YOUR_USERNAME with your actual username
+      - /home/YOUR_USERNAME/goinfre/volumes/flutter-sdk:/home/developer/flutter:cached
+      - /home/YOUR_USERNAME/goinfre/volumes/android-sdk:/home/developer/android-sdk:cached
+      - /home/YOUR_USERNAME/goinfre/volumes/android-config:/home/developer/.android:cached
       
       # Named volumes for caches (no changes needed)
       - pub-cache:/home/developer/pub-cache
@@ -22,9 +24,9 @@ services:
       # Writable copy of Flutter SDK (named volume) used at runtime when host mount is not writable
       - flutter-exec:/home/developer/flutter-exec
       
-      # X11 socket for GUI apps (Flutter Linux desktop) - optional
-      # - /tmp/.X11-unix:/tmp/.X11-unix:rw
-      # - /run/user/YOUR_UID:/run/user/YOUR_UID:rw
+      # X11 socket for GUI apps (Flutter Linux desktop) - REQUIRED for emulator
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /run/user/YOUR_UID:/run/user/YOUR_UID:rw
       
     environment:
       - FLUTTER_HOME=/home/developer/flutter
@@ -33,9 +35,10 @@ services:
       - PUB_CACHE=/home/developer/pub-cache
       - GRADLE_USER_HOME=/home/developer/gradle-cache
       - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-      # - DISPLAY=${DISPLAY}
-      # - XDG_RUNTIME_DIR=/run/user/YOUR_UID
-      # - LIBGL_ALWAYS_SOFTWARE=1
+      # Display settings - REQUIRED for Linux emulator
+      - DISPLAY=${DISPLAY}
+      - XDG_RUNTIME_DIR=/run/user/YOUR_UID
+      - LIBGL_ALWAYS_SOFTWARE=1
       
     working_dir: /workspace
     ports:

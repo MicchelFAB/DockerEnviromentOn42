@@ -23,15 +23,15 @@ Before starting, ensure you have:
    code --version
    ```
 
-4. **Access to sgoinfre/NFS mount**
+4. **Access to goinfre/NFS mount**
    ```bash
-   ls ~/sgoinfre
+   ls ~/goinfre
    # Should list directory contents
    ```
 
 5. **Sufficient disk space on NFS**
    ```bash
-   df -h ~/sgoinfre
+   df -h ~/goinfre
    # Need at least 5GB free
    ```
 
@@ -47,35 +47,38 @@ cd DockerEnviromentOn42
 
 ### Step 2: Configure Paths
 
-The default configuration uses `~/sgoinfre` for NFS storage. If your setup is different:
+The default configuration uses `/home/YOUR_USERNAME/goinfre/volumes/` for NFS storage. You MUST update the paths:
 
 1. **Edit `docker-compose.yaml`:**
    ```bash
    nano docker-compose.yaml
    ```
 
-2. **Update the volume paths** (lines 11-13):
+2. **Update the volume paths** with your username and project path:
    ```yaml
    volumes:
-     - ./pastaCompartilhada:/workspace:cached
-     - ~/sgoinfre/flutter-sdk:/home/developer/flutter:cached
-     - ~/sgoinfre/android-sdk:/home/developer/android-sdk:cached
-     - ~/sgoinfre/android-config:/home/developer/.android:cached
+     # Change to your Flutter project directory:
+     - /home/YOUR_USERNAME/your-project:/workspace:cached
+     
+     # Update with your username:
+     - /home/YOUR_USERNAME/goinfre/volumes/flutter-sdk:/home/developer/flutter:cached
+     - /home/YOUR_USERNAME/goinfre/volumes/android-sdk:/home/developer/android-sdk:cached
+     - /home/YOUR_USERNAME/goinfre/volumes/android-config:/home/developer/.android:cached
    ```
 
-3. **Replace `~/sgoinfre`** with your actual NFS path, for example:
-   - `/home/username/sgoinfre`
-   - `/sgoinfre/username`
-   - Or wherever your NFS mount is located
+3. **Important notes:**
+   - Replace `YOUR_USERNAME` with your actual 42 username
+   - The `goinfre/volumes/` structure is required for proper NFS permissions
+   - Do NOT use `~/` notation - use full absolute paths
 
 ### Step 3: Prepare NFS Directories
 
 Create the required directories on your NFS mount:
 
 ```bash
-mkdir -p ~/sgoinfre/flutter-sdk
-mkdir -p ~/sgoinfre/android-sdk
-mkdir -p ~/sgoinfre/android-config
+mkdir -p /home/$USER/goinfre/volumes/flutter-sdk
+mkdir -p /home/$USER/goinfre/volumes/android-sdk
+mkdir -p /home/$USER/goinfre/volumes/android-config
 ```
 
 ### Step 4: Choose Your Setup Method
@@ -232,12 +235,12 @@ docker-compose up -d --build
 
 **Check disk space:**
 ```bash
-df -h ~/sgoinfre
+df -h ~/goinfre
 ```
 
 **Check permissions:**
 ```bash
-touch ~/sgoinfre/test && rm ~/sgoinfre/test
+touch ~/goinfre/test && rm ~/goinfre/test
 ```
 
 **Manually run setup:**

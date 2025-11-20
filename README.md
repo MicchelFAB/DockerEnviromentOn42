@@ -1,12 +1,12 @@
 # Flutter Docker Development Environment for 42 School
 
-A containerized Flutter and Android SDK development environment optimized for 42 School's infrastructure, specifically designed to work with NFS storage (sgoinfre) and avoid local storage quota limitations.
+A containerized Flutter and Android SDK development environment optimized for 42 School's infrastructure, specifically designed to work with NFS storage (goinfre) and avoid local storage quota limitations.
 
 ## 🎯 Purpose
 
 This setup allows you to:
 - ✅ Develop Flutter applications with full Android SDK support
-- ✅ Store large SDKs and caches on NFS (sgoinfre) instead of local storage
+- ✅ Store large SDKs and caches on NFS (goinfre) instead of local storage
 - ✅ Use VSCode with Dev Containers extension for seamless development
 - ✅ Maintain persistent development environment across container rebuilds
 - ✅ Work without requiring sudo privileges on the host machine
@@ -15,26 +15,24 @@ This setup allows you to:
 
 ```
 Host System (42 School)
-├── ~/sgoinfre/                    # NFS Storage (large files)
-│   ├── flutter-sdk/               # Flutter SDK (~1.5GB)
-│   ├── android-sdk/               # Android SDK (~3GB)  
-│   ├── pub-cache/                 # Dart/Flutter packages
-│   ├── gradle-cache/              # Gradle build cache
-│   └── android-config/            # Android configurations
+├── ~/goinfre/volumes/              # NFS Storage (large files)
+│   ├── flutter-sdk/                # Flutter SDK (~1.5GB)
+│   ├── android-sdk/                # Android SDK (~3GB)  
+│   └── android-config/             # Android configurations
 │
-└── ~/project/                     # Your project (this repo)
+└── ~/project/                      # Your project (this repo)
     ├── .devcontainer/
-    │   └── devcontainer.json      # VSCode Dev Container config
-    ├── Dockerfile                 # Container image definition
-    ├── docker-compose.yaml        # Service and volume configuration
-    ├── setup-sdks.sh             # SDK installation script
-    └── flutter.sh                # Helper script for Flutter commands
+    │   └── devcontainer.json       # VSCode Dev Container config
+    ├── Dockerfile                  # Container image definition
+    ├── docker-compose.yaml         # Service and volume configuration
+    ├── setup-sdks.sh              # SDK installation script
+    └── flutter.sh                 # Helper script for Flutter commands
 
 Container Environment
-├── /workspace/                    # Your project files (mounted)
-├── /home/developer/flutter/       # Flutter SDK (from NFS)
-├── /home/developer/android-sdk/   # Android SDK (from NFS)
-└── /home/developer/.pub-cache/    # Package cache (from NFS)
+├── /workspace/                     # Your project files (mounted)
+├── /home/developer/flutter/        # Flutter SDK (from NFS)
+├── /home/developer/android-sdk/    # Android SDK (from NFS)
+└── /home/developer/.pub-cache/     # Package cache (from NFS)
 ```
 
 ## 🚀 Quick Start
@@ -42,7 +40,7 @@ Container Environment
 ### Prerequisites
 - Docker and Docker Compose installed
 - VSCode with "Dev Containers" extension (`ms-vscode-remote.remote-containers`)
-- Access to sgoinfre NFS mount (typically `/home/$USER/sgoinfre` or `/sgoinfre`)
+- Access to goinfre NFS mount (typically `/home/$USER/goinfre`)
 
 ### Option 1: Using VSCode Dev Containers (Recommended)
 
@@ -54,10 +52,14 @@ Container Environment
    ```
 
 2. **Update paths in `docker-compose.yaml`:**
-   Edit the volume mounts to match your username:
+   Edit the volume mounts to match your username and project:
    ```yaml
-   - /home/YOUR_USERNAME/sgoinfre/flutter-sdk:/home/developer/flutter
-   - /home/YOUR_USERNAME/sgoinfre/android-sdk:/home/developer/android-sdk
+   # Change the workspace path to your project:
+   - /home/YOUR_USERNAME/your-project:/workspace:cached
+   
+   # Update NFS paths with your username:
+   - /home/YOUR_USERNAME/goinfre/volumes/flutter-sdk:/home/developer/flutter
+   - /home/YOUR_USERNAME/goinfre/volumes/android-sdk:/home/developer/android-sdk
    ```
 
 3. **Open in VSCode:**
@@ -221,7 +223,7 @@ The container runs as root by default to handle NFS permission issues. If you en
 
 ```bash
 # Verify NFS mount is writable
-touch /home/$USER/sgoinfre/test.txt && rm /home/$USER/sgoinfre/test.txt
+touch /home/$USER/goinfre/test.txt && rm /home/$USER/goinfre/test.txt
 ```
 
 ### SDKs not installing
@@ -230,7 +232,7 @@ touch /home/$USER/sgoinfre/test.txt && rm /home/$USER/sgoinfre/test.txt
 docker exec -it flutter-dev-container bash /home/developer/setup-sdks.sh
 
 # Check available disk space on NFS
-df -h /home/$USER/sgoinfre
+df -h /home/$USER/goinfre
 ```
 
 ### VSCode can't connect to container
@@ -266,12 +268,12 @@ code --list-extensions | grep ms-vscode-remote.remote-containers
 - **First run**: SDK installation takes 5-10 minutes and requires ~5GB on NFS
 - **NFS permissions**: Container runs as root to handle NFS write restrictions
 - **Network**: SDK downloads require internet access
-- **Storage**: Ensure sufficient space on sgoinfre before starting
+- **Storage**: Ensure sufficient space on goinfre before starting
 
 ## 🤝 Contributing
 
 Improvements and bug fixes are welcome! Please ensure changes work with:
-- 42 School's infrastructure (NFS/sgoinfre)
+- 42 School's infrastructure (NFS/goinfre)
 - Docker rootless mode (if applicable)
 - VSCode Dev Containers extension
 
