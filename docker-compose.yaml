@@ -10,11 +10,11 @@ services:
       # ⚠️ CHANGE THIS PATH: Point to your Flutter project directory
       # Example: - /home/YOUR_USERNAME/your-project:/workspace:cached
       - /home/mamaral-/Documents/42Advanced/Github/42Porto-MobilePiscine:/workspace:cached
-      - /home/mamaral-/goinfre/volumes/flutter-sdk:/home/developer/flutter:cached
-      - /home/mamaral-/goinfre/volumes/android-sdk:/home/developer/android-sdk:cached
+      - /tmp/volumes/flutter-sdk:/home/developer/flutter:cached
+      - /tmp/volumes/android-sdk:/home/developer/android-sdk:cached
       - pub-cache:/home/developer/pub-cache
       - gradle-cache:/home/developer/gradle-cache
-      - /home/mamaral-/goinfre/volumes/android-config:/home/developer/.android:cached
+      - /tmp/volumes/android-config:/home/developer/.android:cached
       # Writable copy of Flutter SDK (named volume) used at runtime when host mount is not writable
       - flutter-exec:/home/developer/flutter-exec
       # X11 socket for GUI apps (Flutter Linux desktop)
@@ -39,7 +39,19 @@ services:
 volumes:
   pub-cache:
     driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /tmp/volumes/pub-cache
   gradle-cache:
     driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /tmp/volumes/gradle-cache
   flutter-exec:
     driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /tmp/volumes/flutter-exec
